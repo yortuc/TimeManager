@@ -1,0 +1,86 @@
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+	<title>time manager</title>
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="header">
+			<div data-bind="if: user.logged" class="pull-right">
+				<span data-bind="text: user.name"></span>
+				<button data-bind="click: user.logOut" type="button" class="btn btn-xs btn-danger">Çıkış</button>
+			</div>
+			<h3 class="text-muted">Time Manager</h3>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="jumbotron">
+			<div data-bind="visible: !user.logged()">
+				<h1>Lütfen Giriş yapınız!</h1>
+				<p>Zaman yönetimine başlayabilmek için giriş yapmanız gerekmektedir.</p>
+				<p><a href="#" data-bind="click: user.login" class="btn btn-primary btn-lg" role="button">Google+ ile giriş yap</a></p>
+			</div>
+
+			<div data-bind="if: user.logged">
+				<div data-bind="if: !running()">
+					<p><a href="#" data-bind="click: startTask" class="btn btn-success btn-lg" role="button">Başla!</a></p>
+				</div>
+
+				<div data-bind="if: running">
+					<p>
+						<span>geçen süre</span>
+						<span data-bind="text: runTime" class="label label-danger"></span>
+						<span>saniye</span>
+					</p>
+				</div>
+
+				<!-- çalışma listesi -->
+				<div data-bind="foreach: tasks">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<span data-bind="text: start" class="label label-default"></span>
+							<span data-bind="text: finish" class="label label-default"></span>
+							<span data-bind="text: text"></span>
+
+							<div class="pull-right">
+								<button data-bind="click: $parent.tweetTask" type="button" class="btn btn-xs btn-info">tweet</button>
+								<button data-bind="click: $parent.deleteTask" type="button" class="btn btn-xs btn-danger">Sil</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div data-bind="if: tasks().length > 0" class="pull-right">
+					toplam çalışma süresi <span data-bind="text: totalTaskTime" class="label label-default"></span>
+				</div>
+
+				<span data-bind="if: tasks().length == 0" class="label label-info">henüz çalışma girişi yok</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- vendor -->
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+
+	<!-- js -->
+	<script type="text/javascript" src="js/googleAuth.js"></script>
+	<script type="text/javascript" src="js/user.js"></script>
+	<script type="text/javascript" src="js/task.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
+	<!-- google api -->
+	<script type="text/javascript">
+		(function() {
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			po.src = 'https://apis.google.com/js/client.js?onload=onLoadCallback';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		})();
+	</script>
+</body>
+</html>
